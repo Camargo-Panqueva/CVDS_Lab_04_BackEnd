@@ -101,8 +101,9 @@ public class TaskService implements TasksService {
     @Override
     public TaskModel deleteTask(String id) throws AppException {
         if (taskRepository.existsById(id)) {
+            TaskModel taskToDelete = taskRepository.findById(id).get();
             taskRepository.deleteById(id);
-            return taskRepository.findById(id).get();
+            return taskToDelete;
         }
         throw new TaskException.TaskNotFoundException(id);
     }
