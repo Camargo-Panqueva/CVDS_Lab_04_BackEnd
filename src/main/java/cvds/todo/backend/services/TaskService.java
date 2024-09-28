@@ -1,5 +1,9 @@
 package cvds.todo.backend.services;
 
+
+import cvds.todo.backend.exceptions.AppException;
+import cvds.todo.backend.exceptions.TaskException;
+
 import cvds.todo.backend.interfeces.TasksService;
 import cvds.todo.backend.model.TaskModel;
 import cvds.todo.backend.repository.TaskRepository;
@@ -7,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+
+import java.util.UUID;
+
 
 /**
  * Servicio que implementa la lógica para gestionar las tareas.
@@ -24,8 +31,7 @@ public class TaskService implements TasksService {
      * @return Lista de tareas almacenadas en el repositorio.
      */
     @Override
-    public ArrayList<TaskModel> getAllTasks() {
-        // Lógica para obtener todas las tareas
+    public ArrayList<TaskModel> getAllTasks() throws AppException {
         return new ArrayList<>();
     }
 
@@ -36,8 +42,7 @@ public class TaskService implements TasksService {
      * @return La tarea correspondiente al ID o null si no se encuentra.
      */
     @Override
-    public TaskModel getTaskById(int id) {
-        // Lógica para obtener una tarea por su ID
+    public TaskModel getTaskById(UUID id) throws AppException {
         return null;
     }
 
@@ -48,8 +53,7 @@ public class TaskService implements TasksService {
      * @return La tarea creada.
      */
     @Override
-    public TaskModel createTask(TaskModel task) {
-        // Lógica para crear una nueva tarea
+    public TaskModel createTask(TaskModel task) throws AppException {
         return null;
     }
 
@@ -61,9 +65,9 @@ public class TaskService implements TasksService {
      * @return La tarea actualizada.
      */
     @Override
-    public TaskModel updateTask(int id, TaskModel task) {
-        // Lógica para actualizar una tarea existente
-        return null;
+    public TaskModel updateTask(UUID id, TaskModel task) throws AppException {
+        throw new TaskException.TaskConflictException("Any");
+        //return null;
     }
 
     /**
@@ -72,7 +76,6 @@ public class TaskService implements TasksService {
      * @param id Identificador de la tarea a eliminar.
      */
     @Override
-    public void deleteTask(int id) {
-        // Lógica para eliminar una tarea
+    public void deleteTask(UUID id) throws AppException {
     }
 }
