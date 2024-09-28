@@ -76,6 +76,7 @@ public class TaskService implements TasksService {
      * @param id Identificador de la tarea a eliminar.
      */
     @Override
-    public void deleteTask(UUID id) throws AppException {
+    public TaskModel deleteTask(UUID id) throws AppException {
+        return null;
     }
 }

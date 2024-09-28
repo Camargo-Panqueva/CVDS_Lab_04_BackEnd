@@ -16,5 +16,5 @@ public interface TasksService {
 
     public TaskModel updateTask(UUID id, TaskModel task) throws AppException;
 
-    public void deleteTask(UUID id) throws AppException;
+    public TaskModel deleteTask(UUID id) throws AppException;
 }

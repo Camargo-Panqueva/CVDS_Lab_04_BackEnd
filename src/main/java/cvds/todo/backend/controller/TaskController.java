@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,11 +27,11 @@ public class TaskController {
      *
      * @return Lista de todas las tareas.
      */
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> getAllTasks() {
         try {
             List<TaskModel> tasks = taskService.getAllTasks();
-            return ResponseEntity.ok(UUID.randomUUID());
+            return ResponseEntity.ok(tasks);
 
         } catch (Exception e) {
             if (e instanceof AppException) {
@@ -51,7 +52,7 @@ public class TaskController {
     public ResponseEntity<?> getTaskById(@PathVariable("id") UUID id) {
         try {
             TaskModel task = taskService.getTaskById(id);
-            return ResponseEntity.ok(id);
+            return ResponseEntity.ok(task);
         } catch (Exception e) {
             if (e instanceof AppException) {
                 return ((AppException) e).getResponse();
@@ -66,11 +67,11 @@ public class TaskController {
      * @param task Modelo de tarea enviado en el cuerpo de la solicitud.
      * @return El UUID de la nueva tarea creada.
      */
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createTask(@RequestBody TaskModel task) {
         try {
             taskService.createTask(task);
-            return ResponseEntity.ok(task.getName());
+            return ResponseEntity.status(201).body(task);
         } catch (Exception e) {
             if (e instanceof AppException) {
                 return ((AppException) e).getResponse();
@@ -90,7 +91,7 @@ public class TaskController {
     public ResponseEntity<?> updateTask(@PathVariable("id") UUID id, @RequestBody TaskModel task) {
         try {
             TaskModel updatedTask = taskService.updateTask(id, task);
-            return ResponseEntity.ok(id);
+            return ResponseEntity.status(200).body(updatedTask);
         } catch (Exception e) {
             if (e instanceof AppException) {
                 return ((AppException) e).getResponse();
@@ -108,8 +109,8 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable("id") UUID id) {
         try {
-            taskService.deleteTask(id);
-            return ResponseEntity.ok(id);
+            TaskModel deletedTask = taskService.deleteTask(id);
+            return ResponseEntity.ok(deletedTask);
         }
         catch (Exception e){
             if (e instanceof AppException){
