@@ -1,4 +1,4 @@
-package cvds.todo.backend.interfece;
+package cvds.todo.backend.interfeces;
 
 import cvds.todo.backend.model.TaskModel;
 

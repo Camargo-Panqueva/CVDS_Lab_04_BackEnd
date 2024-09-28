@@ -1,7 +1,7 @@
 package cvds.todo.backend;
 
 import cvds.todo.backend.repository.TaskRepository;
-import cvds.todo.backend.service.TaskService;
+import cvds.todo.backend.services.TaskService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

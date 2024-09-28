@@ -1,4 +1,4 @@
-package cvds.todo.backend.interfece;
+package cvds.todo.backend.interfeces;
 
 public interface TasksRepository {
 }

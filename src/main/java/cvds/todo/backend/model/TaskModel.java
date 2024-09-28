@@ -11,20 +11,7 @@ public class TaskModel {
     private String description;
     private boolean done;
 
-    public TaskModel() {}
-
-    public TaskModel(UUID id, TaskModel task) {
-        this.id = id;
-        this.name = task.getName();
-        this.description = task.getDescription();
-        this.done = task.isDone();
-    }
-
-    public TaskModel(UUID id, String name, String description, boolean done) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.done = done;
+    public TaskModel() {
     }
 
     public TaskModel(UUID id) {

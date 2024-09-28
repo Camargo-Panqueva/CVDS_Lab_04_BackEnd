@@ -1,7 +1,6 @@
-package cvds.todo.backend.service;
+package cvds.todo.backend.services;
 
-import cvds.todo.backend.interfece.TasksRepository;
-import cvds.todo.backend.interfece.TasksService;
+import cvds.todo.backend.interfeces.TasksService;
 import cvds.todo.backend.model.TaskModel;
 import cvds.todo.backend.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
