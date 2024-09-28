@@ -26,12 +26,12 @@ public class TaskService implements TasksService {
     }
 
     @Override
-    public TaskModel createTask() {
+    public TaskModel createTask(TaskModel task) {
         return null;
     }
 
     @Override
-    public TaskModel updateTask(int id) {
+    public TaskModel updateTask(int id, TaskModel task) {
         return null;
     }
 

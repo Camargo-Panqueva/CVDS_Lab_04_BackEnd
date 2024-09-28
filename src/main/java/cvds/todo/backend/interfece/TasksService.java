@@ -10,9 +10,9 @@ public interface TasksService {
 
     public TaskModel getTaskById(int id);
 
-    public TaskModel createTask();
+    public TaskModel createTask(TaskModel task);
 
-    public TaskModel updateTask(int id);
+    public TaskModel updateTask(int id, TaskModel task);
 
     public void deleteTask(int id);
 }
