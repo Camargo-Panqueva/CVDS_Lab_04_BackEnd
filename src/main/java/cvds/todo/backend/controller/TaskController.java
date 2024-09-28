@@ -1,5 +1,6 @@
 package cvds.todo.backend.controller;
 
+import cvds.todo.backend.exceptions.AppException;
 import cvds.todo.backend.model.TaskModel;
 import cvds.todo.backend.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,18 @@ public class TaskController {
      * @return Lista de todas las tareas.
      */
     @GetMapping("/")
-    public ResponseEntity<List<TaskModel>> getAllTasks() {
-        List<TaskModel> tasks = taskService.getAllTasks();
-        return ResponseEntity.ok(tasks);
+    public ResponseEntity<?> getAllTasks() {
+        try {
+            List<TaskModel> tasks = taskService.getAllTasks();
+            return ResponseEntity.ok(UUID.randomUUID());
+
+        } catch (Exception e) {
+            if (e instanceof AppException) {
+                return ((AppException) e).getResponse();
+            } else {
+                return ResponseEntity.status(500).body(e.getMessage());
+            }
+        }
     }
 
     /**
@@ -38,9 +48,16 @@ public class TaskController {
      * @return La tarea correspondiente al ID proporcionado.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TaskModel> getTaskById(@PathVariable("id") int id) {
-        TaskModel task = taskService.getTaskById(id);
-        return ResponseEntity.ok(task);
+    public ResponseEntity<?> getTaskById(@PathVariable("id") UUID id) {
+        try {
+            TaskModel task = taskService.getTaskById(id);
+            return ResponseEntity.ok(id);
+        } catch (Exception e) {
+            if (e instanceof AppException) {
+                return ((AppException) e).getResponse();
+            }
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     /**
@@ -50,9 +67,16 @@ public class TaskController {
      * @return El UUID de la nueva tarea creada.
      */
     @PostMapping("/")
-    public ResponseEntity<String> createTask(@RequestBody TaskModel task) {
-        taskService.createTask(task);
-        return ResponseEntity.ok("Ok");
+    public ResponseEntity<?> createTask(@RequestBody TaskModel task) {
+        try {
+            taskService.createTask(task);
+            return ResponseEntity.ok(task.getName());
+        } catch (Exception e) {
+            if (e instanceof AppException) {
+                return ((AppException) e).getResponse();
+            }
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     /**
@@ -63,9 +87,16 @@ public class TaskController {
      * @return La tarea actualizada.
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<TaskModel> updateTask(@PathVariable("id") int id, @RequestBody TaskModel task) {
-        TaskModel updatedTask = taskService.updateTask(id, task);
-        return ResponseEntity.ok(updatedTask);
+    public ResponseEntity<?> updateTask(@PathVariable("id") UUID id, @RequestBody TaskModel task) {
+        try {
+            TaskModel updatedTask = taskService.updateTask(id, task);
+            return ResponseEntity.ok(id);
+        } catch (Exception e) {
+            if (e instanceof AppException) {
+                return ((AppException) e).getResponse();
+            }
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 
     /**
@@ -75,9 +106,17 @@ public class TaskController {
      * @return Respuesta sin contenido.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable("id") int id) {
-        taskService.deleteTask(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteTask(@PathVariable("id") UUID id) {
+        try {
+            taskService.deleteTask(id);
+            return ResponseEntity.ok(id);
+        }
+        catch (Exception e){
+            if (e instanceof AppException){
+                return ((AppException) e).getResponse();
+            }
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 }
 

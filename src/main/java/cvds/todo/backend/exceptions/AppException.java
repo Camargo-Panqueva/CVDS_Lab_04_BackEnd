@@ -21,7 +21,7 @@ public abstract class AppException extends Exception {
      *
      * @return ResponseEntity containing the status code and exception message.
      */
-    public ResponseEntity<Object> getResponse() {
+    public ResponseEntity<?> getResponse() {
         return ResponseEntity.status(statusCode).body(this.getMessage());
     }
 }

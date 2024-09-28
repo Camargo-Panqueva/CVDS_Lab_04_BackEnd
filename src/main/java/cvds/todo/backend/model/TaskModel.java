@@ -9,6 +9,7 @@ public class TaskModel {
     private UUID id;
     private String name;
     private String description;
+    @JsonIgnore
     private boolean done;
 
     public TaskModel() {
