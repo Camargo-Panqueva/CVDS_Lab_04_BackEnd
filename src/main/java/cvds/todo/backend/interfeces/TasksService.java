@@ -1,4 +1,4 @@
-package cvds.todo.backend.interfece;
+package cvds.todo.backend.interfeces;
 
 import cvds.todo.backend.model.TaskModel;
 
@@ -10,9 +10,9 @@ public interface TasksService {
 
     public TaskModel getTaskById(int id);
 
-    public TaskModel createTask();
+    public TaskModel createTask(TaskModel task);
 
-    public TaskModel updateTask(int id);
+    public TaskModel updateTask(int id, TaskModel task);
 
     public void deleteTask(int id);
 }

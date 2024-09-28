@@ -1,23 +1,24 @@
 package cvds.todo.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.UUID;
+
 public class TaskModel {
-    private final int id;
+    @JsonIgnore
+    private UUID id;
     private String name;
     private String description;
     private boolean done;
 
-    public TaskModel(int id, String name, String description, boolean done, boolean important) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.done = done;
+    public TaskModel() {
     }
 
-    public TaskModel(int id) {
+    public TaskModel(UUID id) {
         this.id = id;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
