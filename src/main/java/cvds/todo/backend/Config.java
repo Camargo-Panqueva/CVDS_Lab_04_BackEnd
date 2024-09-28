@@ -1,6 +1,5 @@
 package cvds.todo.backend;
 
-import cvds.todo.backend.repository.TaskRepository;
 import cvds.todo.backend.services.TaskService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,16 +31,4 @@ public class Config implements WebMvcConfigurer {
     public TaskService taskService() {
         return new TaskService();
     }
-
-    /**
-     * Crea y configura el bean de TaskRepository, que maneja las operaciones de persistencia
-     * de las tareas.
-     *
-     * @return Una nueva instancia de TaskRepository.
-     */
-    @Bean
-    public TaskRepository taskRepository() {
-        return new TaskRepository();
-    }
-
 }

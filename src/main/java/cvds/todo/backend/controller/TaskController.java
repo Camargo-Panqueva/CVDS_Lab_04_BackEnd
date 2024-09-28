@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Controlador REST para la gestión de tareas (TaskModel).
@@ -32,7 +31,6 @@ public class TaskController {
         try {
             List<TaskModel> tasks = taskService.getAllTasks();
             return ResponseEntity.ok(tasks);
-
         } catch (Exception e) {
             if (e instanceof AppException) {
                 return ((AppException) e).getResponse();
@@ -49,7 +47,7 @@ public class TaskController {
      * @return La tarea correspondiente al ID proporcionado.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTaskById(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> getTaskById(@PathVariable("id") String id) {
         try {
             TaskModel task = taskService.getTaskById(id);
             return ResponseEntity.ok(task);
@@ -88,7 +86,7 @@ public class TaskController {
      * @return La tarea actualizada.
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable("id") UUID id, @RequestBody TaskModel task) {
+    public ResponseEntity<?> updateTask(@PathVariable("id") String id, @RequestBody TaskModel task) {
         try {
             TaskModel updatedTask = taskService.updateTask(id, task);
             return ResponseEntity.status(200).body(updatedTask);
@@ -107,7 +105,7 @@ public class TaskController {
      * @return Respuesta sin contenido.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTask(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> deleteTask(@PathVariable("id") String id) {
         try {
             TaskModel deletedTask = taskService.deleteTask(id);
             return ResponseEntity.ok(deletedTask);
