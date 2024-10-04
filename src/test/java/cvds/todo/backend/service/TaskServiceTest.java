@@ -23,17 +23,15 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class TaskServiceTest {
 
-    @Mock
-    private TaskRepository taskRepository;
-
-    @InjectMocks
-    private TaskService taskService;
-
     // Define reusable constants for cleaner and more maintainable code
     private static final String EXISTING_TASK_ID = UUID.randomUUID().toString();
     private static final String NON_EXISTING_TASK_ID = "1";
     private static final String TASK_NAME = "Task 1";
     private static final String TASK_DESCRIPTION = "Description 1";
+    @Mock
+    private TaskRepository taskRepository;
+    @InjectMocks
+    private TaskService taskService;
 
     @BeforeEach
     void setUp() {
@@ -106,8 +104,7 @@ class TaskServiceTest {
 
         assertEquals(updatedTask, result, "Updated task should match the provided task model.");
         verify(taskRepository, times(1)).findById(EXISTING_TASK_ID);
-        verify(taskRepository, times(1)).deleteById(EXISTING_TASK_ID);
-        verify(taskRepository, times(1)).insert(any(TaskModel.class));
+        verify(taskRepository, times(1)).save(any(TaskModel.class));
     }
 
     @Test

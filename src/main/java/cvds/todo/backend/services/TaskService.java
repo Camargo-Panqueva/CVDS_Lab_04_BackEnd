@@ -84,8 +84,7 @@ public class TaskService implements TasksService {
             taskToUpdate.setDescription(task.getDescription() == null ? taskToUpdate.getDescription() : task.getDescription());
             taskToUpdate.setDone(task.isDone());
 
-            this.deleteTask(id);
-            this.createTask(taskToUpdate);
+            this.taskRepository.save(taskToUpdate);
 
             return taskToUpdate;
         }
