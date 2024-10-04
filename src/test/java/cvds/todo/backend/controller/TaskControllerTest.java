@@ -1,6 +1,5 @@
-package cvds.todo.backend;
+package cvds.todo.backend.controller;
 
-import cvds.todo.backend.controller.TaskController;
 import cvds.todo.backend.model.TaskModel;
 import cvds.todo.backend.services.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
