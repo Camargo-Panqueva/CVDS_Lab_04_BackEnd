@@ -1,5 +1,6 @@
 package cvds.todo.backend.controller;
 
+import cvds.todo.backend.exceptions.TaskException;
 import cvds.todo.backend.model.TaskModel;
 import cvds.todo.backend.services.TaskService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -159,4 +160,99 @@ class TaskControllerTest {
 
         verify(taskService).updateTask(eq(task.getId()), any(TaskModel.class));
     }
+
+    /**
+     * Tests retrieval of all tasks when the service throws an exception.
+     * Verifies that the response returns an internal server error status.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
+    @Test
+    void getAllTasks_WhenServiceThrowsException_ShouldReturnInternalServerError() throws Exception {
+        when(taskService.getAllTasks()).thenThrow(new RuntimeException("Internal Server Error"));
+
+        mockMvc.perform(get("/tasks"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string("Internal Server Error"));
+
+        verify(taskService).getAllTasks();
+    }
+
+    /**
+     * Tests retrieval of a task by ID when the task is not found.
+     * Verifies that the response returns a not found status with an error message.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
+    @Test
+    void getTaskById_WhenTaskNotFound_ShouldReturnNotFound() throws Exception {
+        String nonExistentId = "non-existent-id";
+        when(taskService.getTaskById(nonExistentId))
+                .thenThrow(new TaskException.TaskNotFoundException("Task not found with id: " + nonExistentId));
+
+        mockMvc.perform(get("/tasks/{id}", nonExistentId))
+                .andExpect(status().isNotFound());
+
+        verify(taskService).getTaskById(nonExistentId);
+    }
+
+    /**
+     * Tests creation of a task with invalid data.
+     * Verifies that the response returns a bad request status with an error message.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
+    @Test
+    void createTask_WhenInvalidData_ShouldReturnBadRequest() throws Exception {
+        TaskModel invalidTask = new TaskModel(); // Assuming this task is invalid due to missing data
+        when(taskService.createTask(any(TaskModel.class)))
+                .thenThrow(new TaskException.TaskInvalidValueException("Invalid task data"));
+
+        mockMvc.perform(post("/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidTask)))
+                .andExpect(status().isBadRequest());
+
+        verify(taskService).createTask(any(TaskModel.class));
+    }
+
+    /**
+     * Tests updating a task that is not found.
+     * Verifies that the response returns a not found status with an error message.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
+    @Test
+    void updateTask_WhenTaskNotFound_ShouldReturnNotFound() throws Exception {
+        String nonExistentId = "non-existent-id";
+        TaskModel task = new TaskModel(); // Example task
+        when(taskService.updateTask(eq(nonExistentId), any(TaskModel.class)))
+                .thenThrow(new TaskException.TaskNotFoundException("Task not found with id: " + nonExistentId));
+
+        mockMvc.perform(patch("/tasks/{id}", nonExistentId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(task)))
+                .andExpect(status().isNotFound());
+
+        verify(taskService).updateTask(eq(nonExistentId), any(TaskModel.class));
+    }
+
+    /**
+     * Tests deletion of a task that is not found.
+     * Verifies that the response returns a not found status with an error message.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
+    @Test
+    void deleteTask_WhenTaskNotFound_ShouldReturnNotFound() throws Exception {
+        String nonExistentId = "non-existent-id";
+        when(taskService.deleteTask(nonExistentId))
+                .thenThrow(new TaskException.TaskNotFoundException("Task not found with id: " + nonExistentId));
+
+        mockMvc.perform(delete("/tasks/{id}", nonExistentId))
+                .andExpect(status().isNotFound());
+
+        verify(taskService).deleteTask(nonExistentId);
+    }
+
 }
