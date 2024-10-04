@@ -3,6 +3,8 @@ package cvds.todo.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document(collection = "tasks")
 public class TaskModel {
     private String id;
@@ -57,5 +59,20 @@ public class TaskModel {
                 ", description='" + description + '\'' +
                 ", done=" + done +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        TaskModel task = (TaskModel) obj;
+        return done == task.done &&
+                Objects.equals(id, task.id) &&
+                Objects.equals(name, task.name) &&
+                Objects.equals(description, task.description);
     }
 }
