@@ -3,7 +3,6 @@ package cvds.todo.backend.services;
 
 import cvds.todo.backend.exceptions.AppException;
 import cvds.todo.backend.exceptions.TaskException;
-
 import cvds.todo.backend.interfeces.TaskRepository;
 import cvds.todo.backend.interfeces.TasksService;
 import cvds.todo.backend.model.TaskModel;
@@ -84,8 +83,7 @@ public class TaskService implements TasksService {
             taskToUpdate.setDescription(task.getDescription() == null ? taskToUpdate.getDescription() : task.getDescription());
             taskToUpdate.setDone(task.isDone());
 
-            this.deleteTask(id);
-            this.createTask(taskToUpdate);
+            taskRepository.save(taskToUpdate);
 
             return taskToUpdate;
         }
