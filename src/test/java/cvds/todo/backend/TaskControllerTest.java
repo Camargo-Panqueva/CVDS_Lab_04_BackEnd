@@ -20,6 +20,12 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Integration test for {@link TaskController}.
+ * This class contains unit tests for controller methods
+ * related to task management, ensuring expected behaviors
+ * when interacting with the task service.
+ */
 @WebMvcTest(TaskController.class)
 class TaskControllerTest {
 
@@ -34,6 +40,10 @@ class TaskControllerTest {
 
     private TaskModel task;
 
+    /**
+     * Sets up a TaskModel object before each test.
+     * A unique ID is generated, and the name and description fields are initialized.
+     */
     @BeforeEach
     void setUp() {
         task = new TaskModel();
@@ -42,6 +52,13 @@ class TaskControllerTest {
         task.setDescription("This is a test task.");
     }
 
+    /**
+     * Tests retrieval of a list of tasks.
+     * Mocks the task service response and verifies
+     * that the HTTP response is correct and contains expected data.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
     @Test
     void getAllTasks_ShouldReturnListOfTasks() throws Exception {
         when(taskService.getAllTasks()).thenReturn(Collections.singletonList(task));
@@ -56,6 +73,13 @@ class TaskControllerTest {
         verify(taskService).getAllTasks();
     }
 
+    /**
+     * Tests creation of a new task.
+     * Mocks the task service response and verifies
+     * that the HTTP response is correct and contains the created task data.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
     @Test
     void createTask_ShouldCreateAndReturnTask() throws Exception {
         when(taskService.createTask(any(TaskModel.class))).thenReturn(task);
@@ -71,6 +95,13 @@ class TaskControllerTest {
         verify(taskService).createTask(any(TaskModel.class));
     }
 
+    /**
+     * Tests retrieval of a task by its ID.
+     * Mocks the task service response and verifies
+     * that the HTTP response is correct and contains the requested task data.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
     @Test
     void getTaskById_ShouldReturnTask() throws Exception {
         when(taskService.getTaskById(task.getId())).thenReturn(task);
@@ -85,6 +116,13 @@ class TaskControllerTest {
         verify(taskService).getTaskById(task.getId());
     }
 
+    /**
+     * Tests deletion of a task.
+     * Mocks the task service response and verifies
+     * that the HTTP response is correct and contains the ID of the deleted task.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
     @Test
     void deleteTask_ShouldDeleteAndReturnTask() throws Exception {
         when(taskService.deleteTask(task.getId())).thenReturn(task);
@@ -96,6 +134,13 @@ class TaskControllerTest {
         verify(taskService).deleteTask(task.getId());
     }
 
+    /**
+     * Tests updating a task.
+     * Mocks the task service response and verifies
+     * that the HTTP response is correct and contains the updated task data.
+     *
+     * @throws Exception if an error occurs during test execution.
+     */
     @Test
     void updateTask_ShouldUpdateAndReturnTask() throws Exception {
         TaskModel updatedTask = new TaskModel();
