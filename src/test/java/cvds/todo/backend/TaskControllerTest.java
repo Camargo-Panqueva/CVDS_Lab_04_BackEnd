@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -72,4 +71,48 @@ class TaskControllerTest {
         verify(taskService).createTask(any(TaskModel.class));
     }
 
+    @Test
+    void getTaskById_ShouldReturnTask() throws Exception {
+        when(taskService.getTaskById(task.getId())).thenReturn(task);
+
+        mockMvc.perform(get("/tasks/{id}", task.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(task.getId()))
+                .andExpect(jsonPath("$.name").value(task.getName()))
+                .andExpect(jsonPath("$.description").value(task.getDescription()));
+
+        verify(taskService).getTaskById(task.getId());
+    }
+
+    @Test
+    void deleteTask_ShouldDeleteAndReturnTask() throws Exception {
+        when(taskService.deleteTask(task.getId())).thenReturn(task);
+
+        mockMvc.perform(delete("/tasks/{id}", task.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(task.getId()));
+
+        verify(taskService).deleteTask(task.getId());
+    }
+
+    @Test
+    void updateTask_ShouldUpdateAndReturnTask() throws Exception {
+        TaskModel updatedTask = new TaskModel();
+        updatedTask.setId(task.getId());
+        updatedTask.setName("Updated Task");
+        updatedTask.setDescription("Updated description.");
+
+        when(taskService.updateTask(eq(task.getId()), any(TaskModel.class))).thenReturn(updatedTask);
+
+        mockMvc.perform(patch("/tasks/{id}", task.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedTask)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(updatedTask.getId()))
+                .andExpect(jsonPath("$.name").value(updatedTask.getName()))
+                .andExpect(jsonPath("$.description").value(updatedTask.getDescription()));
+
+        verify(taskService).updateTask(eq(task.getId()), any(TaskModel.class));
+    }
 }
